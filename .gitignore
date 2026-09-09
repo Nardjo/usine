@@ -13,5 +13,8 @@ upstream/
 tasks/todo.md
 
 # Local editor settings and font assets (not shipped)
-.vscode/
 public/fonts/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
