@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import { parseFrontmatter } from "./frontmatter.js";
 
 // Assemble upstream skills into outDir. Replaces only the named skill folders —
-// never wipes the whole directory (Cerberus-owned skills live alongside).
+// never wipes the whole directory (house-owned skills live alongside).
 // `fetchSkill(category, name)` resolves to [{ path, content }] for one skill folder.
 export async function assembleTemplate({ skills, fetchSkill, outDir }) {
   await mkdir(outDir, { recursive: true });
@@ -31,8 +31,8 @@ export async function assembleTemplate({ skills, fetchSkill, outDir }) {
     }
   }
 
-  // Drop upstream skills removed from the curated list (not Cerberus-owned).
-  // Cerberus-owned = present on disk before this run and never in `skills`.
+  // Drop upstream skills removed from the curated list (not house-owned).
+  // house-owned = present on disk before this run and never in `skills`.
   // We only remove names that appear in the previous "was upstream" set: any
   // directory that is neither in nextNames nor in preserveNames.
   // Caller passes preserveNames (dirs that must never be deleted).

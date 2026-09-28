@@ -82,7 +82,7 @@ test("is reproducible and pruneSkills clears dropped upstream skills", async () 
   assert.deepEqual((await readdir(out)).sort(), ["tdd"]);
 });
 
-test("assemble leaves non-upstream (Cerberus) skills intact", async () => {
+test("assemble leaves non-upstream (house) skills intact", async () => {
   const out = await mkdtemp(join(tmpdir(), "cc-asm-"));
   await mkdir(join(out, "caveman"), { recursive: true });
   await writeFile(join(out, "caveman", "SKILL.md"), "mine\n");

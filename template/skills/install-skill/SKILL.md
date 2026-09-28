@@ -1,6 +1,6 @@
 ---
 name: "install-skill"
-description: "Installe ou adopte un Agent Skill dans ce harness Cerberus (skills/), jamais seulement dans les dossiers des outils. À utiliser pour : \"install skill\", \"add skill\", \"ajoute un skill\", npx skills, skills.sh, api2cli install/link, skill depuis GitHub/cloud, ou toute install qui écrirait sous ~/.claude/skills, ~/.agents/skills, ~/.grok/skills, ~/.config/opencode/skills, ~/.gemini/skills."
+description: "Installe ou adopte un Agent Skill dans ce harness de l'usine à code (skills/), jamais seulement dans les dossiers des outils. À utiliser pour : \"install skill\", \"add skill\", \"ajoute un skill\", npx skills, skills.sh, api2cli install/link, skill depuis GitHub/cloud, ou toute install qui écrirait sous ~/.claude/skills, ~/.agents/skills, ~/.grok/skills, ~/.config/opencode/skills, ~/.gemini/skills."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: [source|nom] [--name <nom>]
 ---
@@ -17,7 +17,7 @@ Toute skill **personnelle / tierce** vit dans le harness, pas dans le home d'un 
 
 Les CLIs externes (`api2cli`, skills.sh, marketplaces, `npx …`) écrivent souvent sous `~/.claude/skills`, `~/.agents/skills`, `~/.cli/<app>/skills`, etc. Ce skill **rapatrie** dans le harness puis re-link.
 
-**Hors scope** : `update-harness` (template curé Nardjo/cerberus). Ici = skills hors template que le coaché ajoute.
+**Hors scope** : `update-harness` (template curé Nardjo/usine). Ici = skills hors template que le coaché ajoute.
 
 ## Étapes
 
@@ -109,6 +109,6 @@ Dire : nom du skill, chemin harness, outils liés, rappel que le binaire/runtime
 - **Jamais** laisser une skill uniquement sous `~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, ou `~/.cli/.../skills` sans copie harness.
 - **Jamais** installer « pour un seul outil » : le harness + `setup.sh` multi-provider.
 - Binaires / auth / tokens : hors `skills/` (restent locaux).
-- Ne pas confondre avec `update-harness` (sync template Cerberus).
+- Ne pas confondre avec `update-harness` (sync template de l'usine à code).
 - Si la source est un plugin Claude marketplace (pas un dossier SKILL.md classique) : expliquer la limite ; n'adopter que les skills Agent Skills (dossier + `SKILL.md`).
 - Idempotent : re-run safe si déjà correctement installé.

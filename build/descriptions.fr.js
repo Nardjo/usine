@@ -47,9 +47,9 @@ export const DESCRIPTIONS_FR = {
   wayfinder:
     "Planifie un gros morceau de travail — trop gros pour une session agent — comme une carte partagée de tickets de décision sur le tracker, résolus un par un jusqu'à ce que la route soit claire.",
   "update-harness":
-    "Met à jour ou réinstalle ce harness Cerberus via la CLI (update / reinstall). Template curé Nardjo/cerberus uniquement — pas une sync mattpocock. À utiliser pour \"update harness\", \"reinstall harness\", \"mets à jour mon harness\".",
+    "Met à jour ou réinstalle ce harness de l'usine à code via la CLI (update / reinstall). Template curé Nardjo/usine uniquement — pas une sync mattpocock. À utiliser pour \"update harness\", \"reinstall harness\", \"mets à jour mon harness\".",
   "install-skill":
-    "Installe ou adopte un Agent Skill dans ce harness Cerberus (skills/), jamais seulement dans les dossiers des outils. À utiliser pour \"install skill\", \"add skill\", api2cli, skills.sh, skill GitHub/cloud, ou une skill déjà posée sous ~/.claude/skills etc.",
+    "Installe ou adopte un Agent Skill dans ce harness de l'usine à code (skills/), jamais seulement dans les dossiers des outils. À utiliser pour \"install skill\", \"add skill\", api2cli, skills.sh, skill GitHub/cloud, ou une skill déjà posée sous ~/.claude/skills etc.",
   "empty-trash":
     "Liste puis vide la corbeille macOS (Trash) via le CLI trash. Suppression définitive après confirmation. À utiliser pour \"empty trash\", \"vider la corbeille\", \"vider trash\".",
   wizard:

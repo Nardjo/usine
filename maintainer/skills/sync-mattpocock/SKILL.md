@@ -1,11 +1,11 @@
 ---
 name: "sync-mattpocock"
-description: "MAINTEUR create-cerberus uniquement — synchronise les skills Matt Pocock dans template/skills/ (préserve les skills Cerberus). Ne pas livrer aux coachés. Utiliser : \"sync mattpocock\", \"update matt skills\", \"refresh template\"."
+description: "MAINTEUR create-usine uniquement — synchronise les skills Matt Pocock dans template/skills/ (préserve les skills maison). Ne pas livrer aux coachés. Utiliser : \"sync mattpocock\", \"update matt skills\", \"refresh template\"."
 allowed-tools: Bash, AskUserQuestion, Read, Edit
 argument-hint: [--check]
 ---
 
-# Sync Matt Pocock (mainteneur cerberus)
+# Sync Matt Pocock (mainteneur usine)
 
 **Ce repo uniquement.** Jamais livré aux coachés.
 
@@ -13,13 +13,13 @@ argument-hint: [--check]
 
 | Chemin | Rôle |
 |--------|------|
-| `template/skills/` | **Unique** dossier livré : Matt + Cerberus, à plat |
+| `template/skills/` | **Unique** dossier livré : Matt + maison, à plat |
 | `build/manifest.js` → `UPSTREAM_SKILLS` | Liste Matt à re-fetcher |
-| Skills Cerberus (`caveman`, `update-harness`, `empty-trash`, …) | Édités **directement** sous `template/skills/` ; le build les conserve |
+| Skills maison (`caveman`, `update-harness`, `empty-trash`, …) | Édités **directement** sous `template/skills/` ; le build les conserve |
 
 ## Étapes
 
-### 1. Racine du repo create-cerberus
+### 1. Racine du repo create-usine
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
@@ -50,12 +50,12 @@ Le build :
 
 1. Met de côté les dossiers de `template/skills/` qui **ne** sont **pas** dans `UPSTREAM_SKILLS`
 2. Re-fetch Matt → `template/skills/`
-3. Remet les skills Cerberus
+3. Remet les skills maison
 4. Régénère `SKILLS.md`
 
 ### 5. Résumé
 
-Coachés : `npx github:Nardjo/cerberus update` / `reinstall` — **pas** ce skill.
+Coachés : `npx github:Nardjo/usine update` / `reinstall` — **pas** ce skill.
 
 ## Règles
 

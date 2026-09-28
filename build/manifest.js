@@ -2,7 +2,7 @@
 //
 // - UPSTREAM_SKILLS: fetched from mattpocock/skills at build time
 // - Other dirs already in template/skills/ (caveman, update-harness, empty-trash, …)
-//   are Cerberus-owned: edited there, preserved across build:template
+//   are house-owned: edited there, preserved across build:template
 // - maintainer/skills/: this-repo-only — never shipped
 
 export const CATALOG_ORDER = [

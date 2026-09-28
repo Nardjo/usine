@@ -53,7 +53,7 @@ Source de vérité : `skills/<nom>/` dans **ce** dossier, puis `setup.sh` pour t
 2. Il copie vers `skills/`, met à jour `SKILLS.md`, relance `setup.sh`.
 3. Les binaires / auth du runtime (ex. `~/.cli`) restent hors harness ; seul le `SKILL.md` (+ assets) est versionné ici.
 
-Pour rafraîchir le **template Cerberus** curé (pas une skill perso) : skill **`update-harness`**.
+Pour rafraîchir le **template de l'usine à code** curé (pas une skill perso) : skill **`update-harness`**.
 
 Détail par outil : `tools/<provider>/README.md`.
 

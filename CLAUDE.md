@@ -1,4 +1,4 @@
-# Cerberus
+# L'usine à code
 
 Multi-provider AI coding workflow for Claude Code, OpenCode, Codex, Antigravity, and Grok.
 
@@ -33,15 +33,15 @@ Multi-provider AI coding workflow for Claude Code, OpenCode, Codex, Antigravity,
 
 ## Project
 
-This repo is the `create-cerberus` CLI (package at the repo root). It scaffolds a multi-provider harness of skills for coachés, distributed via `npx github:Nardjo/cerberus`. See the domain glossary in `CONTEXT.md`.
+This repo is the `create-usine` CLI (package at the repo root). It scaffolds a multi-provider harness of skills for coachés, distributed via `npx github:Nardjo/usine`. See the domain glossary in `CONTEXT.md`.
 
 ### Skills layout (this repo)
 
-- `template/skills/` — **only** place for skills shipped to coachés (Matt + Cerberus, flat)
-- Cerberus skills (`caveman`, `update-harness`, `install-skill`, `empty-trash`, …) are edited there directly
+- `template/skills/` — **only** place for skills shipped to coachés (Matt + maison, flat)
+- House skills (`caveman`, `update-harness`, `install-skill`, `empty-trash`, …) are edited there directly
 - `npm run build:template` refreshes Matt from GitHub and preserves non-Matt dirs
 - `maintainer/skills/sync-mattpocock/` — **maintainer only**, never shipped
-- Coachés: `create-cerberus update` / `reinstall` (not sync-mattpocock)
+- Coachés: `create-usine update` / `reinstall` (not sync-mattpocock)
 
 ```bash
 ln -sfn "$(pwd)/maintainer/skills/sync-mattpocock" ~/.claude/skills/sync-mattpocock

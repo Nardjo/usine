@@ -61,7 +61,7 @@ export async function update(args = [], opts = {}) {
       "  Pour migrer vers tools/ + commands partagés, lance :",
     );
     log(
-      "  npx github:Nardjo/cerberus reinstall " + (pathArg ?? harnessDir),
+      "  npx github:Nardjo/usine reinstall " + (pathArg ?? harnessDir),
     );
     log("");
   }
@@ -92,7 +92,7 @@ export async function update(args = [], opts = {}) {
     }
     showDiff(harnessDir, templateDir, unit, log);
     const takeUpstream = await confirm(
-      `Conflit sur ${unit} : prendre la version amont ? (local → .cerberus/backup/) [y/N] `,
+      `Conflit sur ${unit} : prendre la version amont ? (local → .usine/backup/) [y/N] `,
     );
     if (takeUpstream) acceptedConflicts.push(unit);
     else skippedConflicts.push(unit);
@@ -114,7 +114,7 @@ export async function update(args = [], opts = {}) {
   if (skippedConflicts.length) {
     log(`  Conflits conservés (local) : ${skippedConflicts.join(", ")}`);
   }
-  log("  Backups : .cerberus/backup/ (si un conflit a été écrasé)");
+  log("  Backups : .usine/backup/ (si un conflit a été écrasé)");
 
   return { harnessDir, applied, skippedConflicts };
 }
@@ -171,7 +171,7 @@ export async function resolveHarness(pathArg, { cwd, home } = {}) {
   }
 
   throw new Error(
-    "Impossible de localiser un harness. Passe le chemin : create-cerberus update <dossier>",
+    "Impossible de localiser un harness. Passe le chemin : create-usine update <dossier>",
   );
 }
 

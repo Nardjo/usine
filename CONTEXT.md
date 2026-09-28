@@ -1,4 +1,4 @@
-# Cerberus — create-harness
+# L'usine à code — create-harness
 
 Langage du domaine pour le CLI scaffolder qui distribue le harness aux coachés. Glossaire uniquement, pas de détails d'implémentation.
 
@@ -17,9 +17,9 @@ Un dev freelance du programme de coaching de Jordan qui reçoit un harness et en
 _Avoid_: client, élève, user
 
 **Starter curé**:
-Contenu initial du harness : skills Matt (engineering + productivity, hors deprecated/misc/in-progress) + skills Cerberus, le tout dans un seul `template/skills/` (puis `skills/` chez le coaché).
+Contenu initial du harness : skills Matt (engineering + productivity, hors deprecated/misc/in-progress) + skills maison, le tout dans un seul `template/skills/` (puis `skills/` chez le coaché).
 _Avoid_: extras, dossier skills séparé à la racine du repo scaffolder
 
 **Skill mainteneur**:
-Skill réservé au repo create-cerberus (`maintainer/skills/…`), jamais livré aux coachés. Ex. sync des skills Matt Pocock dans le template.
+Skill réservé au repo create-usine (`maintainer/skills/…`), jamais livré aux coachés. Ex. sync des skills Matt Pocock dans le template.
 _Avoid_: le confondre avec `update-harness` (côté coaché)

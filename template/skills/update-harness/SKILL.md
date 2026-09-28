@@ -1,6 +1,6 @@
 ---
 name: "update-harness"
-description: "Met à jour ou réinstalle ce harness Cerberus via la CLI (update / reinstall). Template curé Nardjo/cerberus uniquement — pas une sync mattpocock. À utiliser pour \"update harness\", \"reinstall harness\", \"mets à jour mon harness\"."
+description: "Met à jour ou réinstalle ce harness de l'usine à code via la CLI (update / reinstall). Template curé Nardjo/usine uniquement — pas une sync mattpocock. À utiliser pour \"update harness\", \"reinstall harness\", \"mets à jour mon harness\"."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: [update|reinstall] [--check] [chemin]
 ---
@@ -8,25 +8,25 @@ argument-hint: [update|reinstall] [--check] [chemin]
 # Update Harness
 
 Marche à suivre pour mettre à jour **ce harness** avec le template curé de
-https://github.com/Nardjo/cerberus.
+https://github.com/Nardjo/usine.
 
-**Source unique** : `npx github:Nardjo/cerberus` (le `template/` du package).
+**Source unique** : `npx github:Nardjo/usine` (le `template/` du package).
 **Hors scope** : ne jamais cloner `mattpocock/skills`, ne jamais importer des
-skills amont Matt Pocock. Cette sync-là est réservée au mainteneur de Cerberus
-(repo `cerberus`, hors harness coaché).
+skills amont Matt Pocock. Cette sync-là est réservée au mainteneur de l'usine à code
+(repo `usine`, hors harness coaché).
 
 ## Commandes
 
 ```bash
 # Update normal (layout déjà à jour)
-npx --yes github:Nardjo/cerberus update [chemin]
-npx --yes github:Nardjo/cerberus update --check [chemin]
-npx --yes github:Nardjo/cerberus update [chemin] --take skills/<nom>
+npx --yes github:Nardjo/usine update [chemin]
+npx --yes github:Nardjo/usine update --check [chemin]
+npx --yes github:Nardjo/usine update [chemin] --take skills/<nom>
 
 # Ancien harness (commands/claude, agents/…, pas de tools/)
-npx --yes github:Nardjo/cerberus reinstall [chemin]
+npx --yes github:Nardjo/usine reinstall [chemin]
 # alias :
-npx --yes github:Nardjo/cerberus upgrade [chemin]
+npx --yes github:Nardjo/usine upgrade [chemin]
 ```
 
 | Commande / argument | Effet |
@@ -35,7 +35,7 @@ npx --yes github:Nardjo/cerberus upgrade [chemin]
 | `reinstall` / `upgrade` | Migre l'ancien layout → `tools/` + `commands/` partagés, force `setup.sh` + `RTK.md`, puis update + link. Conserve skills et CLAUDE.md. |
 | `chemin` | Dossier du harness. Optionnel si le cwd est un harness, ou si les symlinks des tools y pointent. |
 | `--check` | Tableau de statuts seulement (`update` only). |
-| `--take <unité>` | En cas de conflit, prendre la version amont (répétable). Backup dans `.cerberus/backup/`. |
+| `--take <unité>` | En cas de conflit, prendre la version amont (répétable). Backup dans `.usine/backup/`. |
 
 Si `update` affiche « Ancien layout détecté », lancer **`reinstall`** (ne pas re-scaffold un nouveau dossier).
 
@@ -56,7 +56,7 @@ Fallbacks : `readlink` sur `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md`,
 Si le harness a encore `commands/claude/`, `agents/claude/`, etc. (pas de `tools/`) :
 
 ```bash
-npx --yes github:Nardjo/cerberus reinstall "$HARNESS"
+npx --yes github:Nardjo/usine reinstall "$HARNESS"
 ```
 
 Puis résumé et stop (reinstall inclut déjà update + setup.sh). Sinon continuer.
@@ -64,7 +64,7 @@ Puis résumé et stop (reinstall inclut déjà update + setup.sh). Sinon continu
 ### 3. Dry-run
 
 ```bash
-npx --yes github:Nardjo/cerberus update --check "$HARNESS"
+npx --yes github:Nardjo/usine update --check "$HARNESS"
 ```
 
 Lire le tableau. Statuts :
@@ -86,18 +86,18 @@ Pour chaque `CONFLIT`, demander via AskUserQuestion : garder local / prendre amo
 ### 5. Appliquer
 
 ```bash
-npx --yes github:Nardjo/cerberus update "$HARNESS"
+npx --yes github:Nardjo/usine update "$HARNESS"
 # ou avec conflits acceptés :
-npx --yes github:Nardjo/cerberus update "$HARNESS" --take skills/tdd
+npx --yes github:Nardjo/usine update "$HARNESS" --take skills/tdd
 ```
 
 ### 6. Résumé
 
-Relayer la sortie CLI : unités appliquées, conflits gardés, rappel `.cerberus/backup/`.
+Relayer la sortie CLI : unités appliquées, conflits gardés, rappel `.usine/backup/`.
 
 ## Règles
 
-- Toujours passer par `npx github:Nardjo/cerberus update` ou `reinstall`.
+- Toujours passer par `npx github:Nardjo/usine update` ou `reinstall`.
 - Ne jamais toucher `CLAUDE.md` / `AGENTS.md` du harness.
 - Ne jamais supprimer un skill absent du template.
 - Ne jamais prendre l'amont sur un conflit skill sans confirmation.

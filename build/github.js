@@ -4,7 +4,7 @@ const API = "https://api.github.com";
 const RAW = "https://raw.githubusercontent.com";
 
 function headers() {
-  const h = { "User-Agent": "create-cerberus-build" };
+  const h = { "User-Agent": "create-usine-build" };
   if (process.env.GITHUB_TOKEN) h.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   return h;
 }

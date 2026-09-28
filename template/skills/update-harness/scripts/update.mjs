@@ -14,7 +14,7 @@
 //   local    local edits, nothing new upstream → left alone
 //   ok       identical to the template
 // `apply` replaces the given units (conflict/local ones are backed up to
-// .cerberus/backup/ first) and rewrites .cerberus/manifest.json: template
+// .usine/backup/ first) and rewrites .usine/manifest.json: template
 // hashes for every unit now identical to the template, previous entries for
 // the ones kept — so the next run classifies them the same way. Run `apply`
 // even with no units: on a manifest-less harness it bootstraps the manifest.
@@ -26,18 +26,20 @@ import {
   mkdir,
   readFile,
   readdir,
+  rename,
   rm,
   writeFile,
 } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const MANIFEST_REL = join(".cerberus", "manifest.json");
-const BACKUP_REL = join(".cerberus", "backup");
+const MANIFEST_REL = join(".usine", "manifest.json");
+const BACKUP_REL = join(".usine", "backup");
 const MANAGED_FILES = ["setup.sh", "SKILLS.md", "RTK.md"];
 
 export async function check(harnessDir, templateDir) {
   await assertHarness(harnessDir);
+  await migrateStateDir(harnessDir);
   const manifest = (await readManifest(harnessDir)) ?? { files: {} };
   const units = [];
   for (const unit of await listUnits(templateDir)) {
@@ -51,6 +53,7 @@ export async function check(harnessDir, templateDir) {
 
 export async function apply(harnessDir, templateDir, unitNames = []) {
   await assertHarness(harnessDir);
+  await migrateStateDir(harnessDir);
   const manifest = (await readManifest(harnessDir)) ?? { files: {} };
   const applied = [];
 
@@ -174,6 +177,15 @@ async function backupUnit(harnessDir, unit) {
   await rm(backup, { recursive: true, force: true });
   await mkdir(dirname(backup), { recursive: true });
   await cp(join(harnessDir, unit), backup, { recursive: true });
+}
+
+// Harnesses installed before the rebrand keep their state in .cerberus/.
+async function migrateStateDir(harnessDir) {
+  const legacy = join(harnessDir, ".cerberus");
+  const current = join(harnessDir, ".usine");
+  if ((await pathExists(legacy)) && !(await pathExists(current))) {
+    await rename(legacy, current);
+  }
 }
 
 async function readManifest(harnessDir) {
