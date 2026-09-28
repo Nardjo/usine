@@ -194,7 +194,7 @@ test("update takes upstream on conflict when confirmed", async () => {
   );
   assert.equal(
     await readFile(
-      join(harness, ".cerberus", "backup", "skills", "tdd", "SKILL.md"),
+      join(harness, ".usine", "backup", "skills", "tdd", "SKILL.md"),
       "utf8",
     ),
     "# ma version\n",

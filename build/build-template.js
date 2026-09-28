@@ -13,7 +13,7 @@ const skillsDir = resolve(templateDir, "skills");
 
 const upstreamNames = new Set(SKILLS.map((s) => s.name));
 
-// Dirs already on disk that are not upstream = Cerberus-owned (preserve always).
+// Dirs already on disk that are not upstream = house-owned (preserve always).
 const before = await readdir(skillsDir, { withFileTypes: true }).catch(() => []);
 const preserveNames = new Set(
   before
@@ -21,7 +21,7 @@ const preserveNames = new Set(
     .map((e) => e.name),
 );
 
-// Known Cerberus skills (in case a prior failed wipe already deleted them from disk —
+// Known house skills (in case a prior failed wipe already deleted them from disk —
 // restore is the caller's job; we still refuse to prune these names if re-added).
 for (const name of ["caveman", "update-harness", "install-skill", "empty-trash"]) {
   preserveNames.add(name);

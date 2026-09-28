@@ -1,4 +1,4 @@
-# Cerberus
+# L'usine à code
 
 Multi-provider AI coding workflow for Claude Code, OpenCode, Codex, Antigravity, and Grok.
 
@@ -33,4 +33,4 @@ Multi-provider AI coding workflow for Claude Code, OpenCode, Codex, Antigravity,
 
 ## Project
 
-This repo is the `create-cerberus` CLI (package at the repo root). It scaffolds a multi-provider harness of skills for coachés, distributed via `npx github:Nardjo/cerberus`. See the domain glossary in `CONTEXT.md`.
+This repo is the `create-usine` CLI (package at the repo root). It scaffolds a multi-provider harness of skills for coachés, distributed via `npx github:Nardjo/usine`. See the domain glossary in `CONTEXT.md`.

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cp, mkdir, mkdtemp, readFile, rm, writeFile, access } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rename, rm, writeFile, access } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { check, apply } from "../template/skills/update-harness/scripts/update.mjs";
@@ -128,7 +128,7 @@ test("applying a conflict backs up the local version first", async () => {
   );
   assert.equal(
     await readFile(
-      join(harness, ".cerberus", "backup", "skills", "tdd", "SKILL.md"),
+      join(harness, ".usine", "backup", "skills", "tdd", "SKILL.md"),
       "utf8",
     ),
     "# ma version\n",
@@ -139,7 +139,7 @@ test("bootstraps a harness without manifest: adopts identical, flags modified", 
   const base = await mkdtemp(join(tmpdir(), "cc-update-"));
   const templateDir = await makeTemplate(base, { tdd: "# tdd v1\n", grill: "# grill v1\n" });
   const harness = await makeHarness(base, templateDir);
-  await rm(join(harness, ".cerberus"), { recursive: true });
+  await rm(join(harness, ".usine"), { recursive: true });
   await writeFile(join(templateDir, "skills", "grill", "SKILL.md"), "# grill v2\n");
   await writeFile(join(harness, "skills", "grill", "SKILL.md"), "# ma version\n");
 
@@ -201,4 +201,17 @@ test("rejects applying a unit unknown to the template", async () => {
     () => apply(harness, templateDir, ["skills/nimporte"]),
     /Unité inconnue/,
   );
+});
+
+test("migrates a pre-rebrand .cerberus/ state dir to .usine/", async () => {
+  const base = await mkdtemp(join(tmpdir(), "cc-update-"));
+  const templateDir = await makeTemplate(base, { tdd: "# tdd v1\n" });
+  const harness = await makeHarness(base, templateDir);
+  await rename(join(harness, ".usine"), join(harness, ".cerberus"));
+  await writeFile(join(harness, "skills", "tdd", "SKILL.md"), "# ma version\n");
+
+  // Still classified from the old manifest: a local edit, not a conflict.
+  assert.equal(statusOf(await check(harness, templateDir), "skills/tdd"), "local");
+  assert.ok(await pathExists(join(harness, ".usine", "manifest.json")));
+  assert.ok(!(await pathExists(join(harness, ".cerberus"))));
 });

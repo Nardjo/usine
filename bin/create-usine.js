@@ -5,12 +5,12 @@ import { update } from "../src/update.js";
 import { reinstall } from "../src/reinstall.js";
 
 const USAGE = `Usage :
-  create-cerberus <dossier>                 Crée un harness
-  create-cerberus update [dossier]          Met à jour skills / setup (layout actuel)
-  create-cerberus update --check [dossier]
-  create-cerberus update [dossier] --take skills/<nom>
-  create-cerberus reinstall [dossier]       Migre l'ancien layout + update + link
-  create-cerberus upgrade [dossier]         Alias de reinstall
+  create-usine <dossier>                 Crée un harness
+  create-usine update [dossier]          Met à jour skills / setup (layout actuel)
+  create-usine update --check [dossier]
+  create-usine update [dossier] --take skills/<nom>
+  create-usine reinstall [dossier]       Migre l'ancien layout + update + link
+  create-usine upgrade [dossier]         Alias de reinstall
 `;
 
 try {

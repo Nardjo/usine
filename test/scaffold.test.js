@@ -27,7 +27,7 @@ test("scaffolds a harness folder with skills and README", async () => {
   assert.ok(!(await pathExists(join(target, ".git"))));
 
   const manifest = JSON.parse(
-    await readFile(join(target, ".cerberus", "manifest.json"), "utf8"),
+    await readFile(join(target, ".usine", "manifest.json"), "utf8"),
   );
   assert.ok(manifest.version);
   assert.ok(manifest.files["skills/tdd/SKILL.md"]);
@@ -35,7 +35,7 @@ test("scaffolds a harness folder with skills and README", async () => {
   assert.ok(manifest.files["RTK.md"]);
   assert.equal(manifest.files["CLAUDE.md"], undefined);
 
-  // Cerberus skills live in template/skills/ and ship with the harness
+  // House skills live in template/skills/ and ship with the harness
   assert.ok((await lstat(join(target, "skills", "empty-trash", "SKILL.md"))).isFile());
   assert.ok((await lstat(join(target, "skills", "caveman", "SKILL.md"))).isFile());
   assert.ok((await lstat(join(target, "skills", "update-harness", "SKILL.md"))).isFile());

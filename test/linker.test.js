@@ -232,7 +232,7 @@ test("appends a personal config into the harness, then backs it up", async () =>
 
   const merged = await readFile(join(harness, "CLAUDE.md"), "utf8");
   assert.match(merged, /# rules/, "original harness config kept");
-  assert.match(merged, /cerberus:imported:Claude Code/, "import marker added");
+  assert.match(merged, /usine:imported:Claude Code/, "import marker added");
   assert.match(merged, /PERSONAL RULE 42/, "personal content appended");
   assert.ok(await isSymlink(join(home, ".claude/CLAUDE.md")));
   assert.equal(
@@ -314,7 +314,7 @@ test("Antigravity: adopts ~/.gemini skills and appends a non-empty GEMINI.md", a
   assert.match(await readFile(join(harness, "skills/mine/SKILL.md"), "utf8"), /name: mine/);
   assert.ok(await isSymlink(join(home, ".gemini/skills/mine")));
   const merged = await readFile(join(harness, "AGENTS.md"), "utf8");
-  assert.match(merged, /cerberus:imported:Antigravity/);
+  assert.match(merged, /usine:imported:Antigravity/);
   assert.match(merged, /MES NOTES GEMINI/);
   assert.ok(await isSymlink(join(home, ".gemini/GEMINI.md")));
   assert.equal(await readFile(join(home, ".gemini/GEMINI.md.bak"), "utf8"), "MES NOTES GEMINI");
@@ -328,7 +328,7 @@ test("an empty personal config is not appended into the harness", async () => {
   await runLinker(harness, home);
 
   const merged = await readFile(join(harness, "AGENTS.md"), "utf8");
-  assert.ok(!merged.includes("cerberus:imported"), "empty config not imported");
+  assert.ok(!merged.includes("usine:imported"), "empty config not imported");
   assert.ok(await isSymlink(join(home, ".gemini/GEMINI.md")), "still linked to the harness");
 });
 
@@ -400,7 +400,7 @@ test("Grok: adopts ~/.grok skills and appends a non-empty AGENTS.md", async () =
   assert.match(await readFile(join(harness, "skills/mine/SKILL.md"), "utf8"), /name: mine/);
   assert.ok(await isSymlink(join(home, ".grok/skills/mine")));
   const merged = await readFile(join(harness, "AGENTS.md"), "utf8");
-  assert.match(merged, /cerberus:imported:Grok/);
+  assert.match(merged, /usine:imported:Grok/);
   assert.match(merged, /MES NOTES GROK/);
   assert.ok(await isSymlink(join(home, ".grok/AGENTS.md")));
   assert.equal(await readFile(join(home, ".grok/AGENTS.md.bak"), "utf8"), "MES NOTES GROK");

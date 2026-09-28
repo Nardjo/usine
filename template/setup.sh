@@ -76,8 +76,9 @@ adopt_config() {
   if [ -L "$tool_cfg" ]; then return 0; fi
   [ -f "$harness_cfg" ] || return 0
   [ -s "$tool_cfg" ] || return 0
-  local marker="<!-- cerberus:imported:$provider -->"
-  if ! grep -qF "$marker" "$harness_cfg"; then
+  local marker="<!-- usine:imported:$provider -->"
+  # Pre-rebrand harnesses carry the cerberus marker.
+  if ! grep -qF -e "$marker" -e "<!-- cerberus:imported:$provider -->" "$harness_cfg"; then
     {
       printf '\n\n%s\n' "$marker"
       printf '## Config importée (%s)\n\n' "$provider"

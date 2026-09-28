@@ -8,7 +8,7 @@ const TEMPLATE_DIR = resolve(moduleDir, "..", "template");
 
 export async function scaffold(name) {
   if (!name) {
-    throw new Error("Usage : create-cerberus <dossier>");
+    throw new Error("Usage : create-usine <dossier>");
   }
 
   const target = resolve(process.cwd(), name);

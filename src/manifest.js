@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
-const MANIFEST_REL = join(".cerberus", "manifest.json");
+const MANIFEST_REL = join(".usine", "manifest.json");
 
 // Root files managed by the template, besides skills/. CLAUDE.md and
 // AGENTS.md are the coaché's own and are never tracked nor updated.
