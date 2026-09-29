@@ -5,7 +5,8 @@
 //   node update.mjs check <harness> <template>
 //   node update.mjs apply <harness> <template> [unit...]
 //
-// A "unit" is a skill directory (skills/<name>) or a managed root file
+// A "unit" is a skill, named skills/<name> whatever its folder (legacy flat
+// skills/<name> or skills/<category>/<name>), or a managed root file
 // (setup.sh, SKILLS.md, RTK.md). CLAUDE.md / AGENTS.md are the coaché's own
 // and are never units. `check` prints { units: [{ unit, status }] } where status is:
 //   new      absent locally → safe to add
@@ -26,11 +27,19 @@ import {
   mkdir,
   readFile,
   readdir,
+  realpath,
   rename,
   rm,
   writeFile,
 } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import {
+  basename,
+  dirname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+} from "node:path";
 import { fileURLToPath } from "node:url";
 
 const MANIFEST_REL = join(".usine", "manifest.json");
@@ -61,7 +70,10 @@ export async function apply(harnessDir, templateDir, unitNames = []) {
     const status = await classify(harnessDir, templateDir, manifest, unit);
     if (status === "ok") continue;
     if (status === "conflict" || status === "local") {
-      await backupUnit(harnessDir, unit);
+      await backupUnit(
+        harnessDir,
+        relative(harnessDir, await unitPath(harnessDir, unit)),
+      );
     }
     await replaceUnit(templateDir, harnessDir, unit);
     applied.push(unit);
@@ -105,16 +117,40 @@ async function listUnits(templateDir) {
   const entries = await readdir(join(templateDir, "skills"), {
     withFileTypes: true,
   });
-  const skills = entries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => `skills/${entry.name}`)
-    .sort();
-  return [...skills, ...MANAGED_FILES];
+  const skills = new Set();
+  for (const entry of entries) {
+    const dir = join(templateDir, "skills", entry.name);
+    if (await pathExists(join(dir, "SKILL.md"))) {
+      skills.add(`skills/${entry.name}`);
+    } else if (entry.isDirectory()) {
+      for (const child of await readdir(dir)) {
+        if (await pathExists(join(dir, child, "SKILL.md"))) {
+          skills.add(`skills/${child}`);
+        }
+      }
+    }
+  }
+  return [...[...skills].sort(), ...MANAGED_FILES];
+}
+
+// Folder of a unit inside rootDir: skills/<name> if present (legacy flat or
+// alias), else skills/<category>/<name>. Falls back to the flat path.
+async function unitPath(rootDir, unit) {
+  const flat = join(rootDir, unit);
+  if (!unit.startsWith("skills/") || (await pathExists(flat))) return flat;
+  const skills = join(rootDir, "skills");
+  for (const entry of await readdir(skills, { withFileTypes: true })) {
+    const path = join(skills, entry.name, basename(unit));
+    if (entry.isDirectory() && (await pathExists(join(path, "SKILL.md")))) {
+      return path;
+    }
+  }
+  return flat;
 }
 
 // { relPath: sha256 } of the unit's files inside rootDir; {} if absent.
 async function unitSnapshot(rootDir, unit) {
-  const path = join(rootDir, unit);
+  const path = await unitPath(rootDir, unit);
   if (!(await pathExists(path))) return {};
   if (unit.startsWith("skills/")) {
     const snapshot = {};
@@ -163,20 +199,65 @@ function sameSnapshot(a, b) {
   );
 }
 
+// True when the harness keeps skills in category folders
+// (skills/<category>/<name>/SKILL.md).
+async function isCategorized(harnessDir) {
+  const skills = join(harnessDir, "skills");
+  if (!(await pathExists(skills))) return false;
+  for (const entry of await readdir(skills, { withFileTypes: true })) {
+    const dir = join(skills, entry.name);
+    if (!entry.isDirectory() || (await pathExists(join(dir, "SKILL.md")))) continue;
+    for (const child of await readdir(dir)) {
+      if (await pathExists(join(dir, child, "SKILL.md"))) return true;
+    }
+  }
+  return false;
+}
+
+// Existing units are replaced where they really live (flat, alias or
+// category). A new skill lands in its template category; a flat template
+// skill stays flat, except in a categorized harness where it goes to
+// skills/imported/ (no flat skills/<name> next to category folders).
 async function replaceUnit(templateDir, harnessDir, unit) {
-  await rm(join(harnessDir, unit), { recursive: true, force: true });
-  await mkdir(dirname(join(harnessDir, unit)), { recursive: true });
-  await cp(join(templateDir, unit), join(harnessDir, unit), {
-    recursive: true,
-  });
+  const source = await realpath(await unitPath(templateDir, unit));
+  const local = await unitPath(harnessDir, unit);
+  if (await pathExists(local)) {
+    const target = await realpath(local);
+    await rm(target, { recursive: true, force: true });
+    await cp(source, target, { recursive: true });
+    return;
+  }
+  const templateSkills = await realpath(join(templateDir, "skills"));
+  const real = relative(templateSkills, source);
+  const categorized =
+    unit.startsWith("skills/") &&
+    real !== basename(unit) &&
+    !real.startsWith("..") &&
+    !isAbsolute(real);
+  let target = local;
+  if (unit.startsWith("skills/")) {
+    const folder = categorized
+      ? real
+      : (await isCategorized(harnessDir))
+        ? join("imported", basename(unit))
+        : basename(unit);
+    target = join(harnessDir, "skills", folder);
+  }
+  if (target !== local && (await pathExists(target))) {
+    await backupUnit(harnessDir, relative(harnessDir, target));
+  }
+  await rm(local, { recursive: true, force: true }); // dangling link, if any
+  await rm(target, { recursive: true, force: true });
+  await mkdir(dirname(target), { recursive: true });
+  await cp(source, target, { recursive: true });
 }
 
 // Backups live outside skills/ so setup.sh never symlinks them into a tool.
-async function backupUnit(harnessDir, unit) {
-  const backup = join(harnessDir, BACKUP_REL, unit);
+async function backupUnit(harnessDir, rel) {
+  const backup = join(harnessDir, BACKUP_REL, rel);
   await rm(backup, { recursive: true, force: true });
   await mkdir(dirname(backup), { recursive: true });
-  await cp(join(harnessDir, unit), backup, { recursive: true });
+  await cp(await realpath(join(harnessDir, rel)), backup, { recursive: true });
 }
 
 // Harnesses installed before the rebrand keep their state in .cerberus/.
@@ -237,7 +318,7 @@ async function pathExists(path) {
 
 const invokedDirectly =
   process.argv[1] &&
-  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+  (await realpath(resolve(process.argv[1]))) === fileURLToPath(import.meta.url);
 
 if (invokedDirectly) {
   const [mode, harness, template, ...units] = process.argv.slice(2);
