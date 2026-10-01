@@ -48,7 +48,7 @@ HARNESS="$(dirname "$(readlink "$HOME/.claude/CLAUDE.md")")"
 ```
 
 Fallbacks : `readlink` sur `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md`,
-`~/.gemini/GEMINI.md`. Sinon demander le chemin. Vérifier que
+`~/.gemini/GEMINI.md`, `~/.omp/agent/AGENTS.md`. Sinon demander le chemin. Vérifier que
 `$HARNESS/setup.sh` et `$HARNESS/skills/` existent.
 
 ### 2. Ancien layout ?

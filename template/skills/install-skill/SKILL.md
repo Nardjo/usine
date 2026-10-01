@@ -1,6 +1,6 @@
 ---
 name: "install-skill"
-description: "Installe ou adopte un Agent Skill dans ce harness de l'usine à code (skills/), jamais seulement dans les dossiers des outils. À utiliser pour : \"install skill\", \"add skill\", \"ajoute un skill\", npx skills, skills.sh, api2cli install/link, skill depuis GitHub/cloud, ou toute install qui écrirait sous ~/.claude/skills, ~/.agents/skills, ~/.grok/skills, ~/.config/opencode/skills, ~/.gemini/skills."
+description: "Installe ou adopte un Agent Skill dans ce harness de l'usine à code (skills/), jamais seulement dans les dossiers des outils. À utiliser pour : \"install skill\", \"add skill\", \"ajoute un skill\", npx skills, skills.sh, api2cli install/link, skill depuis GitHub/cloud, ou toute install qui écrirait sous ~/.claude/skills, ~/.agents/skills, ~/.grok/skills, ~/.config/opencode/skills, ~/.gemini/skills, ~/.omp/agent/skills."
 allowed-tools: Bash, AskUserQuestion
 argument-hint: [source|nom] [--name <nom>]
 ---
@@ -30,7 +30,8 @@ for p in \
   "$HOME/.config/opencode/AGENTS.md" \
   "$HOME/.codex/AGENTS.md" \
   "$HOME/.gemini/GEMINI.md" \
-  "$HOME/.grok/AGENTS.md"; do
+  "$HOME/.grok/AGENTS.md" \
+  "$HOME/.omp/agent/AGENTS.md"; do
   if [ -L "$p" ]; then
     HARNESS="$(cd "$(dirname "$(readlink "$p")")" && pwd)"
     break
@@ -106,7 +107,7 @@ Dire : nom du skill, chemin harness, outils liés, rappel que le binaire/runtime
 
 ## Règles
 
-- **Jamais** laisser une skill uniquement sous `~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, ou `~/.cli/.../skills` sans copie harness.
+- **Jamais** laisser une skill uniquement sous `~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, `~/.omp/agent/skills`, ou `~/.cli/.../skills` sans copie harness.
 - **Jamais** installer « pour un seul outil » : le harness + `setup.sh` multi-provider.
 - Binaires / auth / tokens : hors `skills/` (restent locaux).
 - Ne pas confondre avec `update-harness` (sync template de l'usine à code).

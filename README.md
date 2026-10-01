@@ -2,7 +2,7 @@
 
 > Un harness de coding IA multi-outils. Une commande, rien à installer.
 
-`create-usine` te pose un dossier à toi : des skills au format Agent Skills (workflow engineering + productivité de [Matt Pocock](https://github.com/mattpocock/skills), plus quelques skills maison), branchés sur Claude Code, OpenCode, Codex, Antigravity et Grok. Un skill s'écrit une fois, tous tes outils le voient.
+`create-usine` te pose un dossier à toi : des skills au format Agent Skills (workflow engineering + productivité de [Matt Pocock](https://github.com/mattpocock/skills), plus quelques skills maison), branchés sur Claude Code, OpenCode, Codex, Antigravity, Grok et omp. Un skill s'écrit une fois, tous tes outils le voient.
 
 ## Installer
 
@@ -74,7 +74,7 @@ npx github:Nardjo/usine reinstall   # depuis le harness, ou via les symlinks
 
 ## Un skill, tous les outils
 
-Claude Code, OpenCode, Codex, Antigravity et Grok ont convergé sur le même standard Agent Skills : un dossier `<nom>/SKILL.md` avec du frontmatter `name` + `description`. Pas de moteur de conversion : un symlink suffit. Détail : [docs/adr/0001](docs/adr/0001-no-sync-engine-agent-skills-symlinks.md).
+Claude Code, OpenCode, Codex, Antigravity, Grok et omp ont convergé sur le même standard Agent Skills : un dossier `<nom>/SKILL.md` avec du frontmatter `name` + `description`. Pas de moteur de conversion : un symlink suffit. Détail : [docs/adr/0001](docs/adr/0001-no-sync-engine-agent-skills-symlinks.md).
 
 ## À l'install
 

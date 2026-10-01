@@ -1,6 +1,6 @@
 # Agent rules
 
-Global rules for your AI coding agents. This file is symlinked into Claude Code (`~/.claude/CLAUDE.md`) and, as `AGENTS.md`/`GEMINI.md`, into OpenCode (`~/.config/opencode/AGENTS.md`), Codex (`~/.codex/AGENTS.md`), Antigravity CLI (`~/.gemini/GEMINI.md`), and Grok (`~/.grok/AGENTS.md`). Edit it to taste: it's yours.
+Global rules for your AI coding agents. This file is symlinked into Claude Code (`~/.claude/CLAUDE.md`) and, as `AGENTS.md`/`GEMINI.md`, into OpenCode (`~/.config/opencode/AGENTS.md`), Codex (`~/.codex/AGENTS.md`), Antigravity CLI (`~/.gemini/GEMINI.md`), Grok (`~/.grok/AGENTS.md`), and omp (`~/.omp/agent/AGENTS.md`). Edit it to taste: it's yours.
 
 ## Language
 
@@ -51,7 +51,7 @@ Global rules for your AI coding agents. This file is symlinked into Claude Code 
 
 This harness ships a curated set of Agent Skills. See [SKILLS.md](SKILLS.md) for the catalog, and invoke a skill by name when a task matches its description.
 
-- **Source of truth: this harness** (`skills/`, `commands/`, `tools/`). Never leave a new skill only under a tool home (`~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, or `~/.cli/…/skills`).
+- **Source of truth: this harness** (`skills/`, `commands/`, `tools/`). Never leave a new skill only under a tool home (`~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, `~/.omp/agent/skills`, or `~/.cli/…/skills`).
 - To install or adopt any skill (api2cli, skills.sh, GitHub, cloud, or a folder already dropped in a tool home): use the **`install-skill`** skill, then `bash setup.sh`.
 
 ## RTK

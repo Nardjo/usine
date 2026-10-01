@@ -15,6 +15,7 @@
 #   tools/codex/         — hooks.json + config.toml + agents/ + rules/
 #   tools/gemini/        — settings.json + agents/ + hooks/ (Antigravity)
 #   tools/grok/          — config.toml + hooks/
+#   tools/omp/           — config.yml + extensions/
 #   CLAUDE.md / AGENTS.md — global rules, symlinked per tool
 # Secrets stay local: settings.local.json, auth.json, credentials, oauth.
 
@@ -245,6 +246,16 @@ if [ -d "$HOME/.grok" ]; then
   adopt_config "$HOME/.grok/AGENTS.md" "$HARNESS_DIR/AGENTS.md" "Grok"
 fi
 
+# omp (oh-my-pi): agent state, auth (agent.db), sessions, models.yml and
+# mcp.json stay local in ~/.omp/agent.
+if [ -d "$HOME/.omp/agent" ]; then
+  adopt_dir    "$HOME/.omp/agent/skills"     "$HARNESS_DIR/skills"
+  adopt_dir    "$HOME/.omp/agent/commands"   "$HARNESS_DIR/commands"
+  adopt_dir    "$HOME/.omp/agent/extensions" "$HARNESS_DIR/tools/omp/extensions"
+  adopt_file   "$HOME/.omp/agent/config.yml" "$HARNESS_DIR/tools/omp/config.yml"
+  adopt_config "$HOME/.omp/agent/AGENTS.md"  "$HARNESS_DIR/AGENTS.md" "omp"
+fi
+
 # --- pass 2: link the harness into every installed tool --------------------
 
 linked=()
@@ -316,8 +327,20 @@ if [ -d "$HOME/.grok" ]; then
   linked+=("Grok")
 fi
 
+if [ -d "$HOME/.omp/agent" ]; then
+  # omp dedupes skills by realpath, so the same symlinks seen through
+  # ~/.claude/skills do not show up twice.
+  link_dir    "$HARNESS_DIR/skills"                 "$HOME/.omp/agent/skills"
+  link_tree   "$HARNESS_DIR/commands"               "$HOME/.omp/agent/commands"
+  link_tree   "$HARNESS_DIR/tools/omp/extensions"   "$HOME/.omp/agent/extensions"
+  link_config "$HARNESS_DIR/tools/omp/config.yml"   "$HOME/.omp/agent/config.yml"
+  link_config "$HARNESS_DIR/AGENTS.md"              "$HOME/.omp/agent/AGENTS.md"
+  link_config "$HARNESS_DIR/RTK.md"                 "$HOME/.omp/agent/RTK.md"
+  linked+=("omp")
+fi
+
 if [ ${#linked[@]} -eq 0 ]; then
-  echo "Aucun outil détecté (Claude Code, OpenCode, Codex, Antigravity, Grok). Rien lié."
+  echo "Aucun outil détecté (Claude Code, OpenCode, Codex, Antigravity, Grok, omp). Rien lié."
   echo "Installe un outil puis relance : bash setup.sh"
 else
   echo "Harness lié à : ${linked[*]}"
@@ -372,7 +395,7 @@ if [ "${CC_SKIP_TRASH:-}" != "1" ]; then
 fi
 
 # rtk (Rust Token Killer) — install if missing, then wire hooks.
-# Claude/OpenCode: rewrite hooks via `rtk init`. Codex/Grok: RTK.md + AGENTS.md rule.
+# Claude/OpenCode: rewrite hooks via `rtk init`. Codex/Grok/omp: RTK.md + AGENTS.md rule.
 # Do NOT run `rtk init --codex`: it replaces the AGENTS.md symlink with a real file.
 # Skip entirely with CC_SKIP_RTK=1 (tests / offline).
 if [ "${CC_SKIP_RTK:-}" != "1" ]; then
@@ -413,7 +436,7 @@ if [ "${CC_SKIP_RTK:-}" != "1" ]; then
         || rtk init -g --gemini >/dev/null 2>&1 \
         || true
     fi
-    echo "rtk prêt ($(rtk --version 2>/dev/null || echo ok)) — hooks Claude/OpenCode ; instructions Codex/Grok via RTK.md"
+    echo "rtk prêt ($(rtk --version 2>/dev/null || echo ok)) — hooks Claude/OpenCode ; instructions Codex/Grok/omp via RTK.md"
   else
     echo "rtk non disponible — le harness a RTK.md ; installe le binaire puis relance setup.sh"
   fi

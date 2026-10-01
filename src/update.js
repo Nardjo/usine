@@ -24,6 +24,7 @@ const PROVIDER_MARKERS = [
   [".codex", "AGENTS.md"],
   [".gemini", "GEMINI.md"],
   [".grok", "AGENTS.md"],
+  [".omp/agent", "AGENTS.md"],
 ];
 
 /**

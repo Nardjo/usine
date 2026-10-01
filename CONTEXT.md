@@ -9,7 +9,7 @@ L'espace de travail curé et multi-provider (skills, commands, agents) qu'un coa
 _Avoid_: setup, config, dotfiles
 
 **Provider**:
-Un outil de codage IA cible vers lequel le harness se synchronise, chacun avec sa propre convention de config. Set v1 : Claude Code, OpenCode, Codex, Antigravity CLI (réutilise `~/.gemini`), Grok Build (`~/.grok`).
+Un outil de codage IA cible vers lequel le harness se synchronise, chacun avec sa propre convention de config. Set v1 : Claude Code, OpenCode, Codex, Antigravity CLI (réutilise `~/.gemini`), Grok Build (`~/.grok`), omp (`~/.omp/agent`).
 _Avoid_: tool, platform, outil
 
 **Coaché**:

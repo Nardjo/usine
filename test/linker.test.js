@@ -33,6 +33,7 @@ async function makeHome(tools) {
   if (tools.includes("codex")) await mkdir(join(home, ".codex"), { recursive: true });
   if (tools.includes("antigravity")) await mkdir(join(home, ".gemini"), { recursive: true });
   if (tools.includes("grok")) await mkdir(join(home, ".grok"), { recursive: true });
+  if (tools.includes("omp")) await mkdir(join(home, ".omp", "agent"), { recursive: true });
   return home;
 }
 
@@ -86,7 +87,7 @@ test("symlink points back into the harness skills dir", async () => {
 
 test("links skills to every installed tool location", async () => {
   const harness = await makeHarness();
-  const home = await makeHome(["claude", "opencode", "codex", "antigravity", "grok"]);
+  const home = await makeHome(["claude", "opencode", "codex", "antigravity", "grok", "omp"]);
   await runLinker(harness, home);
 
   assert.ok(await isSymlink(join(home, ".claude/skills/alpha")));
@@ -94,12 +95,13 @@ test("links skills to every installed tool location", async () => {
   assert.ok(await isSymlink(join(home, ".agents/skills/alpha")));
   assert.ok(await isSymlink(join(home, ".gemini/skills/alpha")));
   assert.ok(await isSymlink(join(home, ".grok/skills/alpha")));
+  assert.ok(await isSymlink(join(home, ".omp/agent/skills/alpha")));
 });
 
 test("links global config to each installed tool", async () => {
   const harness = await makeHarness();
   await writeFile(join(harness, "RTK.md"), "# RTK\n");
-  const home = await makeHome(["claude", "opencode", "codex", "antigravity", "grok"]);
+  const home = await makeHome(["claude", "opencode", "codex", "antigravity", "grok", "omp"]);
   await runLinker(harness, home);
 
   assert.ok(await isSymlink(join(home, ".claude/CLAUDE.md")));
@@ -113,6 +115,8 @@ test("links global config to each installed tool", async () => {
   assert.equal(await readlink(join(home, ".claude/RTK.md")), join(harness, "RTK.md"));
   assert.ok(await isSymlink(join(home, ".codex/RTK.md")));
   assert.ok(await isSymlink(join(home, ".grok/RTK.md")));
+  assert.equal(await readlink(join(home, ".omp/agent/AGENTS.md")), join(harness, "AGENTS.md"));
+  assert.equal(await readlink(join(home, ".omp/agent/RTK.md")), join(harness, "RTK.md"));
 });
 
 test("backs up an existing global config before linking", async () => {
@@ -404,6 +408,34 @@ test("Grok: adopts ~/.grok skills and appends a non-empty AGENTS.md", async () =
   assert.match(merged, /MES NOTES GROK/);
   assert.ok(await isSymlink(join(home, ".grok/AGENTS.md")));
   assert.equal(await readFile(join(home, ".grok/AGENTS.md.bak"), "utf8"), "MES NOTES GROK");
+});
+
+test("omp: adopts skills, extensions, config.yml and AGENTS.md; agent.db stays local", async () => {
+  const harness = await makeHarness();
+  const home = await makeHome(["omp"]);
+  const agent = join(home, ".omp/agent");
+  await mkdir(join(agent, "skills/mine"), { recursive: true });
+  await writeFile(join(agent, "skills/mine/SKILL.md"), "---\nname: mine\ndescription: mine\n---\n");
+  await mkdir(join(agent, "extensions"), { recursive: true });
+  await writeFile(join(agent, "extensions/guard.ts"), "export default () => {};\n");
+  await writeFile(join(agent, "config.yml"), "theme: dark\n");
+  await writeFile(join(agent, "AGENTS.md"), "MES NOTES OMP");
+  await writeFile(join(agent, "agent.db"), "SECRET");
+
+  await runLinker(harness, home);
+
+  assert.ok(await isSymlink(join(agent, "skills/mine")));
+  assert.match(await readFile(join(harness, "skills/mine/SKILL.md"), "utf8"), /name: mine/);
+  assert.equal(await readlink(join(agent, "extensions")), join(harness, "tools/omp/extensions"));
+  assert.equal(await readFile(join(harness, "tools/omp/extensions/guard.ts"), "utf8"), "export default () => {};\n");
+  assert.equal(await readlink(join(agent, "config.yml")), join(harness, "tools/omp/config.yml"));
+  assert.equal(await readFile(join(harness, "tools/omp/config.yml"), "utf8"), "theme: dark\n");
+  const merged = await readFile(join(harness, "AGENTS.md"), "utf8");
+  assert.match(merged, /usine:imported:omp/);
+  assert.match(merged, /MES NOTES OMP/);
+  assert.ok(await isSymlink(join(agent, "AGENTS.md")));
+  assert.equal(await readFile(join(agent, "agent.db"), "utf8"), "SECRET", "auth stays local");
+  assert.equal(await pathExists(join(harness, "tools/omp/agent.db")), false);
 });
 
 test("adopts Claude plugins metadata but leaves plugins/cache local", async () => {

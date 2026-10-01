@@ -1,6 +1,6 @@
 # Mon harness
 
-Un harness multi-provider (Claude Code, OpenCode, Codex, Antigravity, Grok), basé sur le workflow engineering de Matt Pocock.
+Un harness multi-provider (Claude Code, OpenCode, Codex, Antigravity, Grok, omp), basé sur le workflow engineering de Matt Pocock.
 
 ## Structure
 
@@ -13,9 +13,10 @@ Un harness multi-provider (Claude Code, OpenCode, Codex, Antigravity, Grok), bas
 │   ├── opencode/     # opencode.json, tui.json, plugins/, agent/
 │   ├── codex/        # hooks.json, config.toml, agents/, rules/
 │   ├── gemini/       # settings.json, agents/, hooks/ (Antigravity)
-│   └── grok/         # config.toml, hooks/
+│   ├── grok/         # config.toml, hooks/
+│   └── omp/          # config.yml, extensions/
 ├── CLAUDE.md         # règles Claude Code
-├── AGENTS.md         # règles OpenCode / Codex / Gemini / Grok
+├── AGENTS.md         # règles OpenCode / Codex / Gemini / Grok / omp
 ├── RTK.md            # Rust Token Killer (préfixe `rtk` sur les commandes bruyantes)
 ├── SKILLS.md         # catalogue
 └── setup.sh          # adopt + link (+ install RTK si absent)
