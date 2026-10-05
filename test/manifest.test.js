@@ -2,8 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { SKILLS, UPSTREAM_SKILLS } from "../build/manifest.js";
 
-test("manifest lists exactly 25 upstream skills", () => {
-  assert.equal(SKILLS.length, 25);
+test("manifest lists exactly 27 upstream skills", () => {
+  assert.equal(SKILLS.length, 27);
 });
 
 test("manifest includes the engineering + productivity workflow", () => {
@@ -63,5 +63,5 @@ test("no duplicate skill names", () => {
 
 test("UPSTREAM_SKILLS is the mattpocock set (alias SKILLS)", () => {
   assert.equal(SKILLS, UPSTREAM_SKILLS);
-  assert.equal(UPSTREAM_SKILLS.length, 25);
+  assert.equal(UPSTREAM_SKILLS.length, 27);
 });
