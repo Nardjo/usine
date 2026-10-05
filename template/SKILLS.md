@@ -17,15 +17,17 @@ Skills disponibles dans ce harness. Chacun vit dans `skills/<nom>/SKILL.md`.
 | `to-tickets` | Découpe un plan, une spec ou la conversation en tickets tracer-bullet, chacun déclarant ses edges bloquantes, publiés sur le tracker configuré (texte local ou liens natifs). |
 | `to-questionnaire` | Transforme une décision qu'on ne peut pas trancher seul en questionnaire Markdown pour quelqu'un d'autre (async ou réunion). |
 | `implement` | Implémente un travail à partir d'une spec ou d'un ensemble de tickets. |
+| `implement-spec` | Implémente en code le résultat de /to-spec et /to-tickets. |
 | `tdd` | Développement piloté par les tests (TDD). À utiliser quand l'utilisateur veut construire des fonctionnalités ou corriger des bugs en mode test-first, mentionne « red-green-refactor », ou veut des tests d'intégration. |
 | `code-review` | Revue des changements depuis un point fixe (commit, branche, tag ou merge-base) sur deux axes — Standards et Spec — en sous-agents parallèles. À utiliser pour revoir une branche, une PR, du WIP, ou sur « review since X ». |
+| `pr` | À utiliser pour rédiger le corps d'une PR. |
 | `triage` | Fait avancer les issues et les PR externes à travers une machine à états de rôles de triage : catégoriser, vérifier, interroger si besoin, et rédiger des briefs prêts pour un agent. |
 | `diagnosing-bugs` | Boucle de diagnostic pour les bugs difficiles et les régressions de performance. À utiliser quand l'utilisateur dit « diagnostique »/« debug ça », ou signale quelque chose de cassé, qui plante, qui échoue ou qui est lent. |
 | `improve-codebase-architecture` | Analyse une base de code à la recherche d'opportunités d'approfondissement, les présente sous forme de rapport HTML visuel, puis approfondit par interrogatoire celle que tu choisis. |
 | `codebase-design` | Vocabulaire commun pour concevoir des modules profonds. À utiliser quand l'utilisateur veut concevoir ou améliorer l'interface d'un module, repérer des opportunités d'approfondissement, décider de l'emplacement d'une couture (seam), rendre le code plus testable ou navigable par l'IA, ou quand un autre skill a besoin du vocabulaire des modules profonds. |
 | `domain-modeling` | Construire et affiner le modèle de domaine d'un projet. À utiliser quand l'utilisateur veut fixer la terminologie du domaine ou un langage omniprésent, consigner une décision d'architecture, ou quand un autre skill doit maintenir le modèle de domaine. |
 | `handoff` | Condense la conversation en cours en un document de passation qu'un autre agent peut reprendre. |
-| `resolving-merge-conflicts` | À utiliser quand tu dois résoudre un conflit de merge/rebase git en cours. |
+| `retro` | Mène une rétrospective sur une session de code. |
 | `teach` | Enseigne à l'utilisateur un nouveau skill ou concept, au sein de cet espace de travail. |
 | `wait-what` | Stop. Le dernier message n'a pas passé — le re-pitcher en langage simple / ubiquitous language. |
 | `writing-for-agents` | Écrire des documents pour agents (skills, AGENTS.md, CLAUDE.md) : pointeurs de contexte, hiérarchie d'info, critères de fin, leading words. Remplace writing-great-skills. |

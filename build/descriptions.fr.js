@@ -24,14 +24,18 @@ export const DESCRIPTIONS_FR = {
     "Condense la conversation en cours en un document de passation qu'un autre agent peut reprendre.",
   implement:
     "Implémente un travail à partir d'une spec ou d'un ensemble de tickets.",
+  "implement-spec":
+    "Implémente en code le résultat de /to-spec et /to-tickets.",
   "improve-codebase-architecture":
     "Analyse une base de code à la recherche d'opportunités d'approfondissement, les présente sous forme de rapport HTML visuel, puis approfondit par interrogatoire celle que tu choisis.",
   prototype:
     "Construis un prototype jetable pour étoffer une conception : une app terminal exécutable pour les questions d'état ou de logique métier, ou plusieurs variantes d'UI radicalement différentes basculables depuis une seule route.",
+  pr:
+    "À utiliser pour rédiger le corps d'une PR.",
   research:
     "Enquête une question auprès de sources primaires de confiance et capture les findings en Markdown dans le repo. À utiliser pour déléguer une recherche docs/API à un agent en arrière-plan.",
-  "resolving-merge-conflicts":
-    "À utiliser quand tu dois résoudre un conflit de merge/rebase git en cours.",
+  retro:
+    "Mène une rétrospective sur une session de code.",
   "setup-matt-pocock-skills":
     "Configure ce repo pour les skills d'ingénierie : met en place son gestionnaire d'issues, le vocabulaire des labels de triage et l'organisation des docs de domaine. À lancer une fois avant la première utilisation des autres skills d'ingénierie.",
   tdd:
