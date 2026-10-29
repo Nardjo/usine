@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, writeFile, readFile, cp, lstat, readlink, symlink } from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, readFile, cp, lstat, readlink, symlink, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,10 +9,10 @@ import { promisify } from "node:util";
 
 const run = promisify(execFile);
 const here = dirname(fileURLToPath(import.meta.url));
-const SETUP_SH = resolve(here, "..", "template", "setup.sh");
+const SETUP = resolve(here, "..", "template", "setup.mjs");
 
 async function makeHarness() {
-  const dir = await mkdtemp(join(tmpdir(), "cc-harness-"));
+  const dir = await realpath(await mkdtemp(join(tmpdir(), "cc-harness-")));
   for (const name of ["alpha", "beta"]) {
     await mkdir(join(dir, "skills", name), { recursive: true });
     await writeFile(
@@ -22,7 +22,7 @@ async function makeHarness() {
   }
   await writeFile(join(dir, "CLAUDE.md"), "# rules\n");
   await writeFile(join(dir, "AGENTS.md"), "# rules\n");
-  await cp(SETUP_SH, join(dir, "setup.sh"));
+  await cp(SETUP, join(dir, "setup.mjs"));
   return dir;
 }
 
@@ -37,10 +37,11 @@ async function makeHome(tools) {
 }
 
 function runLinker(harness, home) {
-  return run("bash", [join(harness, "setup.sh")], {
+  return run(process.execPath, [join(harness, "setup.mjs")], {
     env: {
       ...process.env,
       HOME: home,
+      USERPROFILE: home,
       CC_SKIP_RTK: "1",
       CC_SKIP_TRASH: "1",
     },

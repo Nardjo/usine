@@ -8,7 +8,7 @@ const TEMPLATE_DIR = resolve(moduleDir, "..", "template");
 
 /**
  * Reinstall / upgrade in place: migrate layout, then update.
- * Forces template setup.sh + RTK.md (wiring); skills/CLAUDE.md stay owned.
+ * Forces template setup.mjs + RTK.md (wiring); skills/CLAUDE.md stay owned.
  */
 export async function reinstall(args = [], opts = {}) {
   const templateDir = opts.templateDir ?? TEMPLATE_DIR;
@@ -36,7 +36,7 @@ export async function reinstall(args = [], opts = {}) {
     cwd,
     home,
     log,
-    forceUnits: ["setup.sh", "RTK.md"],
+    forceUnits: ["setup.mjs", "RTK.md"],
     skipMigrationHint: true,
   });
 
@@ -45,7 +45,7 @@ export async function reinstall(args = [], opts = {}) {
     log(`  Layout : ${migrated.length} étape(s) de migration`);
   }
   log("  Contenu personnel (skills, CLAUDE.md, …) conservé");
-  log("  setup.sh / RTK.md repris du template (wiring) + setup.sh relancé");
+  log("  setup.mjs / RTK.md repris du template (wiring) + setup.mjs relancé");
 
   return { ...result, migrated };
 }

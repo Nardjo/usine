@@ -8,11 +8,12 @@ argument-hint: [--list] [--yes]
 # Empty Trash
 
 Vide la **corbeille macOS** (où vont les fichiers passés par `trash` au lieu de `rm`).
+macOS uniquement : sous Linux / Windows, dire de vider la corbeille depuis le système et s'arrêter.
 C'est **définitif** une fois confirmé — pas de récupération.
 
 ## Prérequis
 
-CLI hasseg `trash` (installé par `setup.sh` du harness) :
+CLI hasseg `trash` (installé par `setup.mjs` du harness) :
 
 ```bash
 TRASH_BIN=""
@@ -25,7 +26,7 @@ for c in \
 done
 ```
 
-Si `TRASH_BIN` est vide : dire d'installer (`brew install trash` ou `bash setup.sh` du harness) et s'arrêter.
+Si `TRASH_BIN` est vide : dire d'installer (`brew install trash` ou `node setup.mjs` du harness) et s'arrêter.
 Ne pas utiliser Apple's `/usr/bin/trash` (pas d'option empty).
 
 ## Étapes

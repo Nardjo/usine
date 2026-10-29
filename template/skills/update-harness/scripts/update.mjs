@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // Merge engine for the update-harness skill. Self-contained: runs inside a
-// coaché's harness with nothing but Node >= 18.
+// coaché's harness with nothing but Node >= 22.
 //
 //   node update.mjs check <harness> <template>
 //   node update.mjs apply <harness> <template> [unit...]
 //
 // A "unit" is a skill directory (skills/<name>) or a managed root file
-// (setup.sh, SKILLS.md, RTK.md). CLAUDE.md / AGENTS.md are the coaché's own
+// (setup.mjs, SKILLS.md, RTK.md). CLAUDE.md / AGENTS.md are the coaché's own
 // and are never units. `check` prints { units: [{ unit, status }] } where status is:
 //   new      absent locally → safe to add
 //   update   upstream changed, local untouched since delivery → safe to replace
@@ -35,7 +35,7 @@ import { fileURLToPath } from "node:url";
 
 const MANIFEST_REL = join(".usine", "manifest.json");
 const BACKUP_REL = join(".usine", "backup");
-const MANAGED_FILES = ["setup.sh", "SKILLS.md", "RTK.md"];
+const MANAGED_FILES = ["setup.mjs", "SKILLS.md", "RTK.md"];
 
 export async function check(harnessDir, templateDir) {
   await assertHarness(harnessDir);
@@ -66,6 +66,7 @@ export async function apply(harnessDir, templateDir, unitNames = []) {
     await replaceUnit(templateDir, harnessDir, unit);
     applied.push(unit);
   }
+  await retireSetupSh(harnessDir);
 
   // Rewrite the manifest: adopt template hashes wherever local now matches
   // the template, keep the previous entries for everything kept.
@@ -171,7 +172,7 @@ async function replaceUnit(templateDir, harnessDir, unit) {
   });
 }
 
-// Backups live outside skills/ so setup.sh never symlinks them into a tool.
+// Backups live outside skills/ so setup.mjs never symlinks them into a tool.
 async function backupUnit(harnessDir, unit) {
   const backup = join(harnessDir, BACKUP_REL, unit);
   await rm(backup, { recursive: true, force: true });
@@ -216,14 +217,25 @@ async function templateVersion(templateDir) {
   }
 }
 
+// setup.sh is the pre-Node linker; such harnesses are still valid targets.
 async function assertHarness(harnessDir) {
-  for (const required of ["setup.sh", "skills"]) {
-    if (!(await pathExists(join(harnessDir, required)))) {
-      throw new Error(
-        `« ${harnessDir} » ne ressemble pas à un harness (setup.sh et skills/ attendus).`,
-      );
-    }
+  const hasSetup =
+    (await pathExists(join(harnessDir, "setup.mjs"))) ||
+    (await pathExists(join(harnessDir, "setup.sh")));
+  if (!hasSetup || !(await pathExists(join(harnessDir, "skills")))) {
+    throw new Error(
+      `« ${harnessDir} » ne ressemble pas à un harness (setup.mjs et skills/ attendus).`,
+    );
   }
+}
+
+// Once setup.mjs is in place the bash linker is dead weight: park it in backup.
+async function retireSetupSh(harnessDir) {
+  const legacy = join(harnessDir, "setup.sh");
+  if (!(await pathExists(join(harnessDir, "setup.mjs")))) return;
+  if (!(await pathExists(legacy))) return;
+  await backupUnit(harnessDir, "setup.sh");
+  await rm(legacy);
 }
 
 async function pathExists(path) {

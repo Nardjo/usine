@@ -12,7 +12,7 @@ Toute skill **personnelle / tierce** vit dans le harness, pas dans le home d'un 
 | Rôle | Chemin |
 |------|--------|
 | **Source de vérité** | `$HARNESS/skills/<nom>/` (avec `SKILL.md`) |
-| **Propagation** | `bash setup.sh` → symlinks vers chaque outil détecté |
+| **Propagation** | `node setup.mjs` → symlinks vers chaque outil détecté |
 | **Catalogue** | `$HARNESS/SKILLS.md` |
 
 Les CLIs externes (`api2cli`, skills.sh, marketplaces, `npx …`) écrivent souvent sous `~/.claude/skills`, `~/.agents/skills`, `~/.cli/<app>/skills`, etc. Ce skill **rapatrie** dans le harness puis re-link.
@@ -38,8 +38,8 @@ for p in \
 done
 ```
 
-Sinon : cwd s'il contient `setup.sh` + `skills/`, sinon demander le chemin.
-Vérifier `$HARNESS/setup.sh` et `$HARNESS/skills/`.
+Sinon : cwd s'il contient `setup.mjs` + `skills/`, sinon demander le chemin.
+Vérifier `$HARNESS/setup.mjs` et `$HARNESS/skills/`.
 
 ### 2. Déterminer la source
 
@@ -95,7 +95,7 @@ Si la ligne existe, mettre à jour la description si elle a changé. Ne pas inve
 ### 5. Linker tous les outils
 
 ```bash
-bash "$HARNESS/setup.sh"
+node "$HARNESS/setup.mjs"
 ```
 
 Vérifier qu'au moins un tool a un symlink vers `$HARNESS/skills/$NAME` (ex. `readlink ~/.claude/skills/$NAME` si Claude est installé).
@@ -107,7 +107,7 @@ Dire : nom du skill, chemin harness, outils liés, rappel que le binaire/runtime
 ## Règles
 
 - **Jamais** laisser une skill uniquement sous `~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, ou `~/.cli/.../skills` sans copie harness.
-- **Jamais** installer « pour un seul outil » : le harness + `setup.sh` multi-provider.
+- **Jamais** installer « pour un seul outil » : le harness + `setup.mjs` multi-provider.
 - Binaires / auth / tokens : hors `skills/` (restent locaux).
 - Ne pas confondre avec `update-harness` (sync template de l'usine à code).
 - Si la source est un plugin Claude marketplace (pas un dossier SKILL.md classique) : expliquer la limite ; n'adopter que les skills Agent Skills (dossier + `SKILL.md`).

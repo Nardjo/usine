@@ -36,7 +36,7 @@ async function makeTemplate(base) {
     join(templateDir, "skills", "new-skill", "SKILL.md"),
     "---\nname: new-skill\ndescription: new\n---\n# new\n",
   );
-  await writeFile(join(templateDir, "setup.sh"), "#!/bin/bash\necho setup v2\n");
+  await writeFile(join(templateDir, "setup.mjs"), "console.log('setup v2');\n");
   await writeFile(join(templateDir, "SKILLS.md"), "# Catalogue v2\n");
   await writeFile(join(templateDir, "RTK.md"), "# RTK\n");
   await writeFile(join(templateDir, "CLAUDE.md"), "# Rules\n");
@@ -146,7 +146,7 @@ test("reinstall migrates, updates skills, keeps personal + CLAUDE.md", async () 
   });
 
   assert.ok(result.migrated.length > 0);
-  assert.ok(result.applied.includes("skills/tdd") || result.applied.includes("setup.sh"));
+  assert.ok(result.applied.includes("skills/tdd") || result.applied.includes("setup.mjs"));
   assert.equal(
     await readFile(join(harness, "skills", "tdd", "SKILL.md"), "utf8"),
     "---\nname: tdd\ndescription: tdd\n---\n# tdd v2\n",
@@ -161,8 +161,13 @@ test("reinstall migrates, updates skills, keeps personal + CLAUDE.md", async () 
     "# mes règles\n",
   );
   assert.match(
-    await readFile(join(harness, "setup.sh"), "utf8"),
+    await readFile(join(harness, "setup.mjs"), "utf8"),
     /setup v2/,
+  );
+  assert.ok(!(await pathExists(join(harness, "setup.sh"))), "legacy setup.sh retired");
+  assert.match(
+    await readFile(join(harness, ".usine", "backup", "setup.sh"), "utf8"),
+    /setup v1/,
   );
   assert.equal(
     await readFile(join(harness, "commands", "deploy.md"), "utf8"),

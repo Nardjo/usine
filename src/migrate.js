@@ -97,7 +97,7 @@ async function flattenProviderBuckets(parent, destDir, label) {
   return steps;
 }
 
-// Same -local collision rule as setup.sh dest_path (keep both on name clash).
+// Same -local collision rule as setup.mjs destPath (keep both on name clash).
 async function moveDirContents(srcDir, destDir) {
   if (!(await pathExists(srcDir))) return 0;
   if (!(await isDirectory(srcDir))) return 0;

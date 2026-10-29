@@ -21,7 +21,7 @@ async function makeTemplate(base, skills) {
     await mkdir(join(templateDir, "skills", name), { recursive: true });
     await writeFile(join(templateDir, "skills", name, "SKILL.md"), content);
   }
-  await writeFile(join(templateDir, "setup.sh"), "echo setup v1\n");
+  await writeFile(join(templateDir, "setup.mjs"), "echo setup v1\n");
   await writeFile(join(templateDir, "SKILLS.md"), "# Catalogue v1\n");
   await writeFile(join(templateDir, "RTK.md"), "# RTK v1\n");
   await writeFile(join(templateDir, "CLAUDE.md"), "# Rules v1\n");
@@ -154,20 +154,20 @@ test("bootstraps a harness without manifest: adopts identical, flags modified", 
   assert.equal(manifest.files["skills/grill/SKILL.md"], undefined);
 });
 
-test("manages setup.sh and SKILLS.md but never CLAUDE.md", async () => {
+test("manages setup.mjs and SKILLS.md but never CLAUDE.md", async () => {
   const base = await mkdtemp(join(tmpdir(), "cc-update-"));
   const templateDir = await makeTemplate(base, { tdd: "# tdd v1\n" });
   const harness = await makeHarness(base, templateDir);
-  await writeFile(join(templateDir, "setup.sh"), "echo setup v2\n");
+  await writeFile(join(templateDir, "setup.mjs"), "echo setup v2\n");
   await writeFile(join(templateDir, "CLAUDE.md"), "# Rules v2\n");
   await writeFile(join(harness, "CLAUDE.md"), "# mes règles\n");
 
   const result = await check(harness, templateDir);
-  assert.equal(statusOf(result, "setup.sh"), "update");
+  assert.equal(statusOf(result, "setup.mjs"), "update");
   assert.equal(statusOf(result, "CLAUDE.md"), undefined);
 
-  await apply(harness, templateDir, ["setup.sh"]);
-  assert.equal(await readFile(join(harness, "setup.sh"), "utf8"), "echo setup v2\n");
+  await apply(harness, templateDir, ["setup.mjs"]);
+  assert.equal(await readFile(join(harness, "setup.mjs"), "utf8"), "echo setup v2\n");
   assert.equal(await readFile(join(harness, "CLAUDE.md"), "utf8"), "# mes règles\n");
 });
 
