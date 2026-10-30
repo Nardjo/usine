@@ -13,7 +13,7 @@ yarn dlx github:Nardjo/usine mon-harness
 bunx github:Nardjo/usine mon-harness
 ```
 
-**Prérequis :** Node 18+, macOS, au moins un des outils ci-dessus. Homebrew aide pour `trash` et `rtk`.
+**Prérequis :** Node 22+, macOS / Linux / Windows, au moins un des outils ci-dessus. Sous Windows, active le Mode développeur (liens symboliques de fichiers). Homebrew aide pour `trash` et `rtk` sur macOS.
 
 Ça crée `mon-harness/`, détecte tes outils, **adopte** tes settings / hooks / plugins / commands déjà présents, puis **symlink** tout depuis ce dossier. Rien pour les outils que tu n'as pas. Secrets et caches lourds restent locaux (`settings.local.json`, fichiers d'auth, cache Claude, plugins marketplace Codex). Pas de questions, pas de `git init` : le dossier est à toi.
 
@@ -28,12 +28,12 @@ Copie-colle ce prompt dans Claude Code, Cursor, Codex, OpenCode, ou tout autre L
 ```
 Installe mon harness de l'usine à code.
 
-1. Prérequis : Node.js >= 18, macOS. Vérifie Node (`node -v`). Si Node manque ou est trop vieux, dis-moi comment l'installer et arrête.
+1. Prérequis : Node.js >= 22 (macOS, Linux ou Windows avec le Mode développeur activé). Vérifie Node (`node -v`). Si Node manque ou est trop vieux, dis-moi comment l'installer et arrête.
 2. Demande-moi où je veux le mettre sur ma machine (chemin parent, ex. `~/Projects`). Nom du dossier : `usine` par défaut — propose-le, change seulement si je le demande ou s'il existe déjà.
 3. Depuis ce chemin parent, lance exactement :
    npx --yes github:Nardjo/usine usine
    (adapte le dernier argument si j'ai choisi un autre nom ; ou `pnpm dlx` / `yarn dlx` / `bunx` selon mon package manager.)
-4. Ne clone pas le repo à la main, ne réécris pas setup.sh. Ne pose de questions que pour l'emplacement (et le nom si besoin).
+4. Ne clone pas le repo à la main, ne réécris pas setup.mjs. Ne pose de questions que pour l'emplacement (et le nom si besoin).
 5. À la fin, résume : chemin absolu du dossier créé, outils branchés (d'après la sortie), et dis-moi de lire `<dossier>/README.md`.
 
 Si tu ne peux pas exécuter de commandes shell : affiche la commande exacte à coller dans mon terminal et arrête.
@@ -44,7 +44,7 @@ Si tu ne peux pas exécuter de commandes shell : affiche la commande exacte à c
 - Un starter curé : skills Matt + skills maison (`caveman`, `update-harness`, `install-skill`, `empty-trash`). Catalogue : [template/SKILLS.md](template/SKILLS.md)
 - Un layout unique : `skills/` et `commands/` partagés, plus `tools/<outil>/` par provider. Tes configs existantes sont adoptées puis liées ; rien n'est écrasé sans `.bak`
 - Le dossier t'appartient. Les mises à jour sont opt-in et ne touchent pas tes changements sans te demander
-- Un `setup.sh` qui rebranche le tout (à relancer après l'install d'un nouvel outil)
+- Un `setup.mjs` qui rebranche le tout (à relancer après l'install d'un nouvel outil)
 
 Pour ajouter un skill tiers : invoquer **`install-skill`** dans un outil, pour qu'il atterrisse dans `skills/` puis soit lié partout. Ne jamais le laisser seulement sous `~/.claude/skills` / `~/.agents/skills` / etc.
 
@@ -57,7 +57,7 @@ npx github:Nardjo/usine update                       # cwd, ou détection via le
 npx github:Nardjo/usine update mon-harness --take skills/tdd  # forcer l'upstream sur un conflit
 ```
 
-`npx` récupère ce repo : `update` applique le `template/` curé sur ton harness. Les skills nouveaux sont ajoutés, ceux que tu n'as pas touchés et qui ont changé upstream sont rafraîchis, tes copies modifiées passent en conflit (diff + prompt ; backup sous `.usine/backup/` si tu prends l'upstream). `CLAUDE.md` / `AGENTS.md` ne sont jamais touchés, un skill retiré upstream n'est jamais supprimé, `setup.sh` est relancé à la fin. Un `.usine/manifest.json` (écrit au scaffold, bootstrapé au premier update pour les anciens harness) suit ce qui vient du template.
+`npx` récupère ce repo : `update` applique le `template/` curé sur ton harness. Les skills nouveaux sont ajoutés, ceux que tu n'as pas touchés et qui ont changé upstream sont rafraîchis, tes copies modifiées passent en conflit (diff + prompt ; backup sous `.usine/backup/` si tu prends l'upstream). `CLAUDE.md` / `AGENTS.md` ne sont jamais touchés, un skill retiré upstream n'est jamais supprimé, `setup.mjs` est relancé à la fin. Un `.usine/manifest.json` (écrit au scaffold, bootstrapé au premier update pour les anciens harness) suit ce qui vient du template.
 
 Depuis un outil IA : skill **`update-harness`** (même CLI, pas une sync Matt Pocock). Décision : [docs/adr/0002](docs/adr/0002-harness-update-cli-and-manifest.md).
 
@@ -70,7 +70,7 @@ npx github:Nardjo/usine reinstall mon-harness
 npx github:Nardjo/usine reinstall   # depuis le harness, ou via les symlinks
 ```
 
-Ça migre `commands/<outil>/` et `agents/<outil>/`, garde tes skills et fichiers perso, rafraîchit `setup.sh` + le starter, puis relance `setup.sh`. Alias : `upgrade`.
+Ça migre `commands/<outil>/` et `agents/<outil>/`, garde tes skills et fichiers perso, rafraîchit `setup.mjs` + le starter, puis relance `setup.mjs`. Alias : `upgrade`.
 
 ## Un skill, tous les outils
 
@@ -78,8 +78,8 @@ Claude Code, OpenCode, Codex, Antigravity et Grok ont convergé sur le même sta
 
 ## À l'install
 
-- **RTK** (Rust Token Killer) : `setup.sh` installe le binaire s'il manque (`brew install rtk` ou curl), pose `RTK.md`, le lie, et lance `rtk init` pour les hooks Claude / OpenCode
-- **trash** : `setup.sh` installe le `trash` Homebrew s'il manque ; les règles du harness interdisent `rm`, les suppressions passent par la Corbeille macOS
+- **RTK** (Rust Token Killer) : `setup.mjs` installe le binaire s'il manque (`brew install rtk` ou curl), pose `RTK.md`, le lie, et lance `rtk init` pour les hooks Claude / OpenCode
+- **trash** : `setup.mjs` installe `trash` s'il manque (Homebrew sur macOS, `npm i -g trash-cli` ailleurs) ; les règles du harness interdisent `rm`, les suppressions passent par la Corbeille
 - Si tu versionnes le harness : retire secrets et chemins machine-local de `config.toml` / settings avant de committer. Un `config.toml` Codex déjà présent est adopté tel quel
 
 ## Développement

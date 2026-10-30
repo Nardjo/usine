@@ -29,7 +29,7 @@ async function makeTemplate(base, skills) {
     await mkdir(join(templateDir, "skills", name), { recursive: true });
     await writeFile(join(templateDir, "skills", name, "SKILL.md"), content);
   }
-  await writeFile(join(templateDir, "setup.sh"), "echo setup v1\n");
+  await writeFile(join(templateDir, "setup.mjs"), "echo setup v1\n");
   await writeFile(join(templateDir, "SKILLS.md"), "# Catalogue v1\n");
   await writeFile(join(templateDir, "RTK.md"), "# RTK v1\n");
   await writeFile(join(templateDir, "CLAUDE.md"), "# Rules v1\n");

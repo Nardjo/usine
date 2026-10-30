@@ -31,7 +31,7 @@ test("scaffolds a harness folder with skills and README", async () => {
   );
   assert.ok(manifest.version);
   assert.ok(manifest.files["skills/tdd/SKILL.md"]);
-  assert.ok(manifest.files["setup.sh"]);
+  assert.ok(manifest.files["setup.mjs"]);
   assert.ok(manifest.files["RTK.md"]);
   assert.equal(manifest.files["CLAUDE.md"], undefined);
 

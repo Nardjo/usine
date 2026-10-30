@@ -30,8 +30,8 @@ Global rules for your AI coding agents. This file is symlinked into Claude Code 
 
 ## File deletion
 
-- **Never** use `rm` / `rm -rf` to delete files or folders. Always use `trash` so items land in the macOS Trash (recoverable).
-- Prefer the Homebrew CLI if present: `/opt/homebrew/opt/trash/bin/trash` (or `$(brew --prefix)/opt/trash/bin/trash`), else `trash` on `PATH`.
+- **Never** use `rm` / `rm -rf` to delete files or folders. Always use `trash` so items land in the system Trash / Recycle Bin (recoverable).
+- On macOS, prefer the Homebrew CLI if present: `/opt/homebrew/opt/trash/bin/trash` (or `$(brew --prefix)/opt/trash/bin/trash`). Elsewhere, `trash` on `PATH`.
 - Only if `trash` is unavailable: stop and ask the user — do not fall back to `rm`.
 
 ## Task management
@@ -52,7 +52,7 @@ Global rules for your AI coding agents. This file is symlinked into Claude Code 
 This harness ships a curated set of Agent Skills. See [SKILLS.md](SKILLS.md) for the catalog, and invoke a skill by name when a task matches its description.
 
 - **Source of truth: this harness** (`skills/`, `commands/`, `tools/`). Never leave a new skill only under a tool home (`~/.claude/skills`, `~/.agents/skills`, `~/.grok/skills`, `~/.config/opencode/skills`, `~/.gemini/skills`, or `~/.cli/…/skills`).
-- To install or adopt any skill (api2cli, skills.sh, GitHub, cloud, or a folder already dropped in a tool home): use the **`install-skill`** skill, then `bash setup.sh`.
+- To install or adopt any skill (api2cli, skills.sh, GitHub, cloud, or a folder already dropped in a tool home): use the **`install-skill`** skill, then `node setup.mjs`.
 
 ## RTK
 

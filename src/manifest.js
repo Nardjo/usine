@@ -8,7 +8,7 @@ const MANIFEST_REL = join(".usine", "manifest.json");
 
 // Root files managed by the template, besides skills/. CLAUDE.md and
 // AGENTS.md are the coaché's own and are never tracked nor updated.
-export const MANAGED_FILES = ["setup.sh", "SKILLS.md", "RTK.md"];
+export const MANAGED_FILES = ["setup.mjs", "SKILLS.md", "RTK.md"];
 
 export async function cliVersion() {
   const pkg = JSON.parse(

@@ -175,9 +175,11 @@ export async function resolveHarness(pathArg, { cwd, home } = {}) {
   );
 }
 
+// setup.sh: harnesses scaffolded before the Node linker.
 async function looksLikeHarness(dir) {
   return (
-    (await pathExists(join(dir, "setup.sh"))) &&
+    ((await pathExists(join(dir, "setup.mjs"))) ||
+      (await pathExists(join(dir, "setup.sh")))) &&
     (await pathExists(join(dir, "skills")))
   );
 }
@@ -185,7 +187,7 @@ async function looksLikeHarness(dir) {
 async function assertHarness(dir) {
   if (!(await looksLikeHarness(dir))) {
     throw new Error(
-      `« ${dir} » ne ressemble pas à un harness (setup.sh et skills/ attendus).`,
+      `« ${dir} » ne ressemble pas à un harness (setup.mjs et skills/ attendus).`,
     );
   }
 }

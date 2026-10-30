@@ -32,7 +32,7 @@ npx --yes github:Nardjo/usine upgrade [chemin]
 | Commande / argument | Effet |
 |---------------------|--------|
 | `update` | Nouveaux skills + maj setup/SKILLS/RTK si layout moderne. |
-| `reinstall` / `upgrade` | Migre l'ancien layout → `tools/` + `commands/` partagés, force `setup.sh` + `RTK.md`, puis update + link. Conserve skills et CLAUDE.md. |
+| `reinstall` / `upgrade` | Migre l'ancien layout → `tools/` + `commands/` partagés, force `setup.mjs` + `RTK.md`, puis update + link. Conserve skills et CLAUDE.md. |
 | `chemin` | Dossier du harness. Optionnel si le cwd est un harness, ou si les symlinks des tools y pointent. |
 | `--check` | Tableau de statuts seulement (`update` only). |
 | `--take <unité>` | En cas de conflit, prendre la version amont (répétable). Backup dans `.usine/backup/`. |
@@ -49,7 +49,7 @@ HARNESS="$(dirname "$(readlink "$HOME/.claude/CLAUDE.md")")"
 
 Fallbacks : `readlink` sur `~/.config/opencode/AGENTS.md`, `~/.codex/AGENTS.md`,
 `~/.gemini/GEMINI.md`. Sinon demander le chemin. Vérifier que
-`$HARNESS/setup.sh` et `$HARNESS/skills/` existent.
+`$HARNESS/setup.mjs` et `$HARNESS/skills/` existent.
 
 ### 2. Ancien layout ?
 
@@ -59,7 +59,7 @@ Si le harness a encore `commands/claude/`, `agents/claude/`, etc. (pas de `tools
 npx --yes github:Nardjo/usine reinstall "$HARNESS"
 ```
 
-Puis résumé et stop (reinstall inclut déjà update + setup.sh). Sinon continuer.
+Puis résumé et stop (reinstall inclut déjà update + setup.mjs). Sinon continuer.
 
 ### 3. Dry-run
 

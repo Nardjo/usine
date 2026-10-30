@@ -18,10 +18,10 @@ Un harness multi-provider (Claude Code, OpenCode, Codex, Antigravity, Grok), bas
 ├── AGENTS.md         # règles OpenCode / Codex / Gemini / Grok
 ├── RTK.md            # Rust Token Killer (préfixe `rtk` sur les commandes bruyantes)
 ├── SKILLS.md         # catalogue
-└── setup.sh          # adopt + link (+ install RTK si absent)
+└── setup.mjs         # adopt + link (+ install RTK si absent)
 ```
 
-`setup.sh` **adopte** tes configs / hooks / plugins / agents déjà présents sous `~/.claude`, `~/.codex`, etc., puis les **symlink** depuis ce dossier.
+`setup.mjs` **adopte** tes configs / hooks / plugins / agents déjà présents sous `~/.claude`, `~/.codex`, etc., puis les **symlink** depuis ce dossier.
 
 | Reste local (jamais dans le harness) | Adopté (peut être machine-local) |
 |--------------------------------------|----------------------------------|
@@ -33,24 +33,24 @@ Un harness multi-provider (Claude Code, OpenCode, Codex, Antigravity, Grok), bas
 
 Si tu versionnes le harness : retire secrets et chemins purement locaux de `config.toml` / settings avant commit.
 
-**RTK** : si le binaire n'est pas installé, `setup.sh` tente `brew install rtk` (ou le script curl). Puis il branche les hooks Claude/OpenCode et symlink `RTK.md`.
+**RTK** : si le binaire n'est pas installé, `setup.mjs` tente `brew install rtk` (ou le script curl hors Windows). Puis il branche les hooks Claude/OpenCode et symlink `RTK.md`.
 
-**trash** : si absent, `setup.sh` tente `brew install trash` (CLI hasseg, corbeille macOS). Les règles du harness interdisent `rm` : les agents passent par `trash` pour tout pouvoir récupérer.
+**trash** : si absent, `setup.mjs` tente `brew install trash` sur macOS (CLI hasseg), sinon `npm i -g trash-cli` (Linux, Windows). Les règles du harness interdisent `rm` : les agents passent par `trash` pour tout pouvoir récupérer.
 
 ## Brancher le harness à tes outils
 
 ```bash
-bash setup.sh
+node setup.mjs
 ```
 
 Relance après avoir installé un nouvel outil.
 
 ## Installer un skill tiers
 
-Source de vérité : `skills/<nom>/` dans **ce** dossier, puis `setup.sh` pour tous les outils. Ne laisse jamais une skill uniquement sous un home d'outil.
+Source de vérité : `skills/<nom>/` dans **ce** dossier, puis `setup.mjs` pour tous les outils. Ne laisse jamais une skill uniquement sous un home d'outil.
 
 1. Invoque le skill **`install-skill`** (api2cli, skills.sh, URL GitHub, dossier local, ou skill déjà posée au mauvais endroit).
-2. Il copie vers `skills/`, met à jour `SKILLS.md`, relance `setup.sh`.
+2. Il copie vers `skills/`, met à jour `SKILLS.md`, relance `setup.mjs`.
 3. Les binaires / auth du runtime (ex. `~/.cli`) restent hors harness ; seul le `SKILL.md` (+ assets) est versionné ici.
 
 Pour rafraîchir le **template de l'usine à code** curé (pas une skill perso) : skill **`update-harness`**.

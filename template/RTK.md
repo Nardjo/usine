@@ -52,4 +52,4 @@ Name collision: if `rtk gain` fails, you may have the wrong `rtk` binary (e.g. R
 | Grok | Instruction: this file + AGENTS.md rule |
 | Antigravity / Gemini | Optional hook via `rtk init -g --gemini` |
 
-This file lives in your harness (`RTK.md`) and is symlinked into each tool home by `setup.sh`.
+This file lives in your harness (`RTK.md`) and is symlinked into each tool home by `setup.mjs`.

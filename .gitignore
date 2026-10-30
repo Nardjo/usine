@@ -14,3 +14,4 @@ tasks/todo.md
 
 # Local editor settings and font assets (not shipped)
 public/fonts/
+.context/
